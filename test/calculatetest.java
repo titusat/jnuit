@@ -1,41 +1,27 @@
-/*
- * Copyright 2015-2018 the original author or authors.
- *
- * All rights reserved. This program and the accompanying materials are
- * made available under the terms of the Eclipse Public License v2.0 which
- * accompanies this distribution and is available at
- *
- * http://www.eclipse.org/legal/epl-v20.html
+import static org.junit.Assert.*;
+import org.junit.Test;
+ 
+/**
+ * This is test case class for division method.
+ * @author codesjava
  */
-
-package com.example.project;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
-class calculatetest {
-
+public class DivisionTestCase {
+	//DivisionTest class objects
+	DivisionTest divisionTest1 = new DivisionTest(10, 2); 
+	DivisionTest divisionTest2 = new DivisionTest(10, 0); 
+ 
+	//Test case for division
 	@Test
-	@DisplayName("1 + 1 = 2")
-	void addsTwoNumbers() {
-		Calculator calculator = new Calculator();
-		assertEquals(2, calculator.add(1, 1), "1 + 1 should equal 2");
+	public void test() {
+		assertEquals(5, divisionTest1.division());
 	}
-
-	@ParameterizedTest(name = "{0} + {1} = {2}")
-	@CsvSource({
-			"0,    1,   1",
-			"1,    2,   3",
-			"49,  51, 100",
-			"1,  100, 101"
-	})
-	void add(int first, int second, int expectedResult) {
-		Calculator calculator = new Calculator();
-		assertEquals(expectedResult, calculator.add(first, second),
-				() -> first + " + " + second + " should equal " + expectedResult);
+ 
+	//Test case for expected ArithmeticException, 
+	//As in this case ArithmeticException
+	// is the expected exception so JUnit 
+	//will pass this unit test. 
+	@Test(expected = ArithmeticException.class)  
+	public void testException() {
+		assertEquals(5, divisionTest2.division());
 	}
 }
