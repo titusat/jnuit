@@ -4,7 +4,6 @@
 	  </description>
 	  <!-- set global properties for this build -->
 	  <property name="src" location="src"/>
-	  <property name="jtest" location="test"/>
 	  <property name="build" location="build"/>
 	  <property name="dist" location="dist"/>
 	  <property name="tbuild" location="tbuild"/>
@@ -17,13 +16,6 @@
 	    <mkdir dir="${build}"/>
 	  </target>
 
-	  <target name="tinit">
-		   <!-- Create the time stamp -->
-		   <tstamp/>
-		   <!-- Create the build directory structure used by compile -->
-		   <mkdir dir="${tbuild}"/>
-		</target>
-		
 	   <target name="compile" depends="init"
 	        description="compile the source">
 	    	<!-- Compile the Java code from ${src} into ${build} -->
@@ -38,20 +30,6 @@
 	    	<jar jarfile="${dist}/MyProject-${DSTAMP}.jar" basedir="${build}"/>
 	   </target>
 		
-		<target name="tcompile" depends="tinit"
-		     description="compile the source">
-		    <!-- Compile the Java code from ${src} into ${build} -->
-		    <javac srcdir="${jtest}" destdir="${tbuild}"/>
-	    </target>
-
-		<target name="tdist" depends="tcompile"
-		       description="generate the distribution">
-		    <!-- Create the distribution directory -->
-		    <mkdir dir="${tdist}/lib"/>
-		    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-		    <jar jarfile="${tdist}/MyProject-${DSTAMP}.jar" basedir="${build}"/>
-		</target>
-
 	    <target name="clean"
 	        description="clean up">
 	    	<!-- Delete the ${build} and ${dist} directory trees -->
