@@ -1,52 +1,61 @@
-<project>
+<project name="MyProject" default="dist" basedir=".">
+	  <description>
+	    simple example build file
+	  </description>
+	  <!-- set global properties for this build -->
+	  <property name="src" location="src"/>
+	  <property name="jtest" location="test"/>
+	  <property name="build" location="build"/>
+	  <property name="dist" location="dist"/>
+	  <property name="tbuild" location="tbuild"/>
+	  <property name="tdist" location="tdist"/>
 
-    <property name="lib.dir" value="/usr/share/ant/lib" />
-    <path id="classpath">
-        <pathelement location="${lib.dir}/ant-junit4.jar"/>
-        <pathelement location="${lib.dir}/ant-junit"/>
-    </path>
+	  <target name="init">
+	    <!-- Create the time stamp -->
+	    <tstamp/>
+	    <!-- Create the build directory structure used by compile -->
+	    <mkdir dir="${build}"/>
+	  </target>
 
-    <target name="clean">
-        <delete dir="build"/>
-    </target>
-    <target name="tcomp">
-        <javac srcdir="test" destdir="test"/>
-    </target>
+	  <target name="tinit">
+		   <!-- Create the time stamp -->
+		   <tstamp/>
+		   <!-- Create the build directory structure used by compile -->
+		   <mkdir dir="${tbuild}"/>
+		</target>
+		
+	   <target name="compile" depends="init"
+	        description="compile the source">
+	    	<!-- Compile the Java code from ${src} into ${build} -->
+	    	<javac srcdir="${src}" destdir="${build}"/>
+	   </target>
 
-    <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"/>
-    </target>
-    <target name="tjar" depends="tcomp">
-        <jar destfile="test/hello.jar" basedir="test/hello">
-            <manifest>
-                <attribute name="Test-Class" value="hellotest"/>
-            </manifest>
-       </jar>
-    </target>
-             
-    <target name="jar">
-        <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/hello.jar" basedir="build/classes">
-            <manifest>
-                <attribute name="Main-Class" value="hello"/>
-            </manifest>
-        </jar>
-    </target>
+	   <target name="dist" depends="compile"
+	        description="generate the distribution">
+	    	<!-- Create the distribution directory -->
+	    	<mkdir dir="${dist}/lib"/>
+	    	<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+	    	<jar jarfile="${dist}/MyProject-${DSTAMP}.jar" basedir="${build}"/>
+	   </target>
+		
+		<target name="tcompile" depends="tinit"
+		     description="compile the source">
+		    <!-- Compile the Java code from ${src} into ${build} -->
+		    <javac srcdir="${jtest}" destdir="${tbuild}"/>
+	    </target>
 
-    <target name="run">
-        <java jar="build/jar/hello.jar" fork="true"/>
-    </target>
+		<target name="tdist" depends="tcompile"
+		       description="generate the distribution">
+		    <!-- Create the distribution directory -->
+		    <mkdir dir="${tdist}/lib"/>
+		    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		    <jar jarfile="${tdist}/MyProject-${DSTAMP}.jar" basedir="${build}"/>
+		</target>
 
-    <target name="junit" depends="tjar">
-        <junit printsummary="yes">
-        <classpath refid="classpath" />
-        <classpath location="test"/>
-        <test name="hellotest" haltonfailure="no" todir="test/results">
-        <formatter type="plain"/>
-        <formatter type="xml"/>
-        </test>
-        </junit>
-    </target>
-
+	    <target name="clean"
+	        description="clean up">
+	    	<!-- Delete the ${build} and ${dist} directory trees -->
+	    	<delete dir="${build}"/>
+	    	<delete dir="${dist}"/>
+	    </target>
 </project>
